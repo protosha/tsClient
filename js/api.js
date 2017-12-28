@@ -28,25 +28,23 @@ function API(url, token) {
   }
 
   this.url = url;
-  this.token = token;
+  // this.token = token;
 }
 
 API.prototype = {};
 
-API.prototype.setToken = function (token) {
-  this.token = token;
-};
-
-API.prototype.ensureToken = function () {
-  if (!this.token) {
-    throw 'No token provided!';
-  }
-};
+// API.prototype.setToken = function (token) {
+//   this.token = token;
+// };
+//
+// API.prototype.ensureToken = function () {
+//   if (!this.token) {
+//     throw 'No token provided!';
+//   }
+// };
 
 API.prototype.getTorrents = function (callback) {
-  this.ensureToken();
-
-  var fullUrl = this.url + '/torrents';
+  var fullUrl = this.url + '/torrent/torrents';
 
   $.getJSON(fullUrl, function (response) {
     callback(response.torrents);
@@ -54,17 +52,13 @@ API.prototype.getTorrents = function (callback) {
 };
 
 API.prototype.addTorrent = function (name, magnetURI, callback) {
-  this.ensureToken();
+  var fullUrl = this.url + '/torrent/torrent';
 
-  var fullUrl = this.url + '/torrents';
-
-  $.post(fullUrl, {torrent_name: name, torrent_magnet: magnetURI }, callback);
+  $.post(fullUrl, {name: name, magnet: magnetURI }, callback);
 };
 
 API.prototype.deleteTorrent = function (torrentId, callback) {
-  this.ensureToken();
-
-  var fullUrl = this.url + '/torrent/' + torrentId;
+  var fullUrl = this.url + '/torrent/torrent/' + torrentId;
 
   $.ajax({
     method: 'DELETE',
@@ -73,9 +67,8 @@ API.prototype.deleteTorrent = function (torrentId, callback) {
 };
 
 API.prototype.getFiles = function (torrentId, callback) {
-  this.ensureToken();
 
-  var fullUrl = this.url + '/torrent/' + torrentId + '/files';
+  var fullUrl = this.url + '/torrent/torrent/' + torrentId + '/files';
 
   $.getJSON(fullUrl, function (response) {
     callback(response.files);
@@ -83,19 +76,19 @@ API.prototype.getFiles = function (torrentId, callback) {
 };
 
 API.prototype.register = function (username, password, callback) {
-  var fullUrl = this.url + '/reg';
+  var fullUrl = this.url + '/reg/register';
 
-  $.post(fullUrl, { user: username, password: password }, callback);
+  $.post(fullUrl, { name: username, pass: password }, callback);
 };
 
 API.prototype.login = function (username, password, callback) {
-  var fullUrl = this.url + '/login';
+  var fullUrl = this.url + '/login/login';
 
-  $.post(fullUrl, { user: username, password: password }, callback);
+  $.post(fullUrl, { name: username, pass: password }, callback);
 };
 
 API.prototype.logout = function (callback) {
-  var fullUrl = this.url + '/login';
+  var fullUrl = this.url + '/login/logout';
 
   $.ajax({
     method: 'DELETE',
@@ -104,49 +97,49 @@ API.prototype.logout = function (callback) {
 };
 
 // Fake API methods
-API.prototype.getTorrents = function (callback) {
-  setTimeout(function () {
-    callback(torrents);
-  }, 2000);
-};
-
-API.prototype.addTorrent = function (name, magnetURI, callback) {
-  var newId = -1;
-  for (var i = 0; i < torrents.length; i++) {
-    if (newId < torrents.torrent_id) {
-      newId = torrents.torrent_id;
-    }
-  }
-  torrents.push({ torrent_id: newId + 1, torrent_name: name });
-
-  callback({});
-};
-
-API.prototype.deleteTorrent = function (torrentId, callback) {
-  for (var i = 0; i < torrents.length; i++) {
-    if (torrents[i].torrent_id === torrentId) {
-      torrents.splice(i, 1);
-      break;
-    }
-  }
-
-  callback({});
-};
-
-API.prototype.getFiles = function (torrentId, callback) {
-  setTimeout(function () {
-    callback(videos);
-  }, 1000);
-};
-
-API.prototype.register = function (username, password, callback) {
-  callback({});
-};
-
-API.prototype.login = function (username, password, callback) {
-  callback({});
-};
-
-API.prototype.logout = function (callback) {
-  callback({});
-};
+// API.prototype.getTorrents = function (callback) {
+//   setTimeout(function () {
+//     callback(torrents);
+//   }, 2000);
+// };
+//
+// API.prototype.addTorrent = function (name, magnetURI, callback) {
+//   var newId = -1;
+//   for (var i = 0; i < torrents.length; i++) {
+//     if (newId < torrents.torrent_id) {
+//       newId = torrents.torrent_id;
+//     }
+//   }
+//   torrents.push({ torrent_id: newId + 1, torrent_name: name });
+//
+//   callback({});
+// };
+//
+// API.prototype.deleteTorrent = function (torrentId, callback) {
+//   for (var i = 0; i < torrents.length; i++) {
+//     if (torrents[i].torrent_id === torrentId) {
+//       torrents.splice(i, 1);
+//       break;
+//     }
+//   }
+//
+//   callback({});
+// };
+//
+// API.prototype.getFiles = function (torrentId, callback) {
+//   setTimeout(function () {
+//     callback(videos);
+//   }, 1000);
+// };
+//
+// API.prototype.register = function (username, password, callback) {
+//   callback({});
+// };
+//
+// API.prototype.login = function (username, password, callback) {
+//   callback({});
+// };
+//
+// API.prototype.logout = function (callback) {
+//   callback({});
+// };

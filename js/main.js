@@ -1,6 +1,7 @@
 'use strict';
 
-var Api = new API('http://localhost:3000');
+var apiHost = 'http://10.0.2.2:3000';
+var Api = new API(apiHost + '/api');
 var pages = {
   login: '#login',
   register: '#register',
@@ -17,8 +18,10 @@ var torrentList = new SimpleList(torrentsContainer, function (item_data) {
   li.addClass('ui-li-static');
   li.addClass('li-torrent');
   li.click(function (e) {
-    selectedTorrent = item_data.value;
-    tau.changePage(pages.videos);
+    if (!$(e.target).hasClass('ui-btn')) {
+      selectedTorrent = item_data.value;
+      tau.changePage(pages.videos);
+    }
   });
 
   var text = $('<span>');
@@ -82,7 +85,7 @@ function refreshTorrentList() {
   torrentList.showProgressMask();
   Api.getTorrents(function (torrents) {
     torrentList.setData(torrents.map(function (v) {
-      return { value: v.torrent_id, display: v.torrent_name };
+      return { value: v._id, display: v.name };
     }));
     torrentList.render();
     torrentList.hideProgressMask();
@@ -94,7 +97,7 @@ function refreshVideoList(torrentId) {
   videoList.showProgressMask();
   Api.getFiles(torrentId, function (files) {
     videoList.setData(files.map(function (v) {
-      return { value: v.file_id, display: v.file_name };
+      return { value: v.id, display: v.name };
     }));
     videoList.render();
     videoList.hideProgressMask();
@@ -107,7 +110,8 @@ function updatePlayer(torrentId, fileId) {
   var video = $(player);
   video.empty();
   var source = $('<source>');
-  source.attr('src', 'https://kp-platform.cdnvideo.ru/kp/mp4/54/633635_1514368972.mp4');
+  var url = apiHost + '/api/torrent/torrent/' + selectedTorrent + '/file/' + selectedVideo;
+  source.attr('src', url);
   video.append(source);
 
   player.load();
@@ -115,7 +119,7 @@ function updatePlayer(torrentId, fileId) {
 
 (function () {
   $(window).on('tizenhwkey', function (e) {
-    if (ev.keyName === "back") {
+    if (e.keyName === "back") {
       var rootPage = (isAuthorized())? pages.torrents : pages.login;
       if (getCurrentPageId() === rootPage && !activePopup) {
         exit();
@@ -175,6 +179,7 @@ $(document).ready(function () {
       return acc;
     }, {});
 
+    console.log(data);
     Api.login(data['login-username'], data['login-password'], function (response) {
       window.sessionStorage.setItem('status', 'loggedIn');
       tau.changePage(pages.torrents);
@@ -190,13 +195,18 @@ $(document).ready(function () {
     }, {});
 
     Api.register(data['register-username'], data['register-password'], function (response) {
-      tau.changePage(pages.login);
+      if (response.success) {
+        tau.changePage(pages.login);
+      } else {
+        // error
+      }
     });
   });
 
   // New torrent
   var addForm = $('#add-form');
   $('#btn-add').click(function (e) {
+    var btn = this;
     var data = addForm.serializeArray().reduce(function (acc, curr) {
       acc[curr.name] = curr.value;
       return acc;
@@ -204,6 +214,9 @@ $(document).ready(function () {
 
     Api.addTorrent(data['add-name'], data['add-magnet'], function (response) {
       refreshTorrentList();
+      var popup = $(btn).parents('.ui-popup')[0];
+      popup = tau.widget.Popup(popup);
+      popup.close();
     });
   });
 
