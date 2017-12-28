@@ -1,3 +1,49 @@
 .popup-content-padding {
-	padding: 18px 24px;
+  padding: 18px 24px;
+}
+
+.centered-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+
+.li-torrent {
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: space-between;
+}
+
+.li-torrent span {
+  /*flex-grow: 1;*/
+}
+
+.li-torrent button {
+  -webkit-flex: 0 0 100px;
+}
+
+.text-truncated {
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+.list-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
+  background: rgba(100, 100, 100, 0.15);
+}
+
+.btn-icon-back::after {
+  -webkit-mask-image: url(./images/core_icon_back.png);
 }

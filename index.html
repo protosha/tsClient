@@ -9,11 +9,94 @@
 </head>
 
 <body>
-  <!-- Start of first page: #one -->
+
+  <div class="ui-page" id="login">
+    <div class="ui-header"><h1>Sign In</h1></div>
+    <div class="ui-content">
+      <form id="login-form">
+        <label for="login-username">Username:</label>
+        <input type="text" name="login-username" id="login-username" placeholder="Your login..." data-text-line="false" />
+
+        <label for="login-password">Password:</label>
+        <input type="password" name="login-password" id="login-password" placeholder="Your password..." data-text-line="false" />
+        <span style="font-size: 0.7em;">
+          New to this app?
+          <a href="#register" style="text-decoration: none;">Sign Up!</a>
+        </span>
+      </form>
+    </div>
+    <div class="ui-footer">
+      <a class="ui-btn ui-inline" id="btn-login">Go</a>
+    </div>
+  </div>
+
+  <div class="ui-page" id="register">
+    <div class="ui-header"><h1>Sign Up</h1></div>
+    <div class="ui-content">
+      <form id="register-form">
+        <label for="register-username">Username:</label>
+        <input type="text" name="login-username" id="register-username" placeholder="User name..." />
+
+        <label for="register-password">Password:</label>
+        <input type="password" name="login-password" id="register-password" placeholder="Password..." />
+      </form>
+    </div>
+    <div class="ui-footer">
+      <a class="ui-btn ui-inline" id="btn-register">Submit!</a>
+    </div>
+  </div>
+
+  <div class="ui-page" id="torrents">
+    <div class="ui-header" data-position="fixed">
+      <h1>Torrents</h1>
+      <a class="ui-header-btn ui-header-btn-left ui-header-btn-text" id="btn-logout">Logout</a>
+    </div>
+    <div class="ui-content" data-scroll="y" id="torrents-container">
+      <div id="add-popup" class="ui-popup center_title_1btn">
+        <div class="ui-popup-header">New torrent</div>
+        <div class="ui-popup-content popup-content-padding">
+          <form id="add-form">
+            <label for="add-name">Name:</label>
+            <input type="text" name="add-name" id="add-name" placeholder="Torrent name..." />
+
+            <label for="add-magnet">Magnet URI:</label>
+            <input type="text" name="add-magnet" id="add-magnet" placeholder="Magnet URI..." />
+          </form>
+        </div>
+        <div class="ui-popup-footer">
+          <a class="ui-btn ui-inline" id="btn-add">Add</a>
+        </div>
+      </div>
+    </div>
+    <div class="ui-footer">
+      <a class="ui-btn" href="#add-popup">Add torrent</a>
+    </div>
+  </div>
+
+  <div class="ui-page" id="videos">
+    <div class="ui-header" data-position="fixed">
+      <h1>Videos</h1>
+      <a class="ui-header-btn ui-header-btn-left ui-header-btn-icon btn-icon-back" data-rel="back"></a>
+    </div>
+    <div class="ui-content" data-scroll="y" id="videos-container">
+
+    </div>
+  </div>
+
+  <div class="ui-page" id="video">
+    <div class="ui-header" data-position="fixed">
+      <h1>Video</h1>
+      <a class="ui-header-btn ui-header-btn-left ui-header-btn-icon btn-icon-back" data-rel="back"></a>
+    </div>
+    <div class="ui-content">
+      <video id="video-player" controls></video>
+    </div>
+  </div>
+<!--
   <div class="ui-page" id="one">
     <div class="ui-header">
       <h1>Multi-page application</h1>
-    </div><!-- /header -->
+    </div>
 
     <div class="ui-content">
       <h2>One</h2>
@@ -41,27 +124,26 @@
           <a class="ui-btn ui-inline" data-rel="back">Button</a>
     </div>
       </div>
-    </div><!-- /content -->
-  </div><!-- /page one -->
+    </div>
+  </div>
 
-
-  <!-- Start of second page: #two -->
   <div class="ui-page" id="two">
     <div class="ui-header">
       <h1>Two</h1>
-    </div><!-- /header -->
+    </div>
 
     <div class="ui-content">
       <h2>Two</h2>
       <p>I have an id of "two" on my page container. I'm the second
         page container in this multi-page template.</p>
       <p><a href="#one" class="ui-btn ui-inline">Back to page "one"</a></p>
-    </div><!-- /content -->
-  </div><!-- /page two -->
-
+    </div>
+  </div>
+-->
   <script type="text/javascript" src="./lib/jquery-3.2.1.js"></script>
   <script type="text/javascript" src="./lib/tau/mobile/js/tau.js"></script>
   <script src="./js/api.js"></script>
+  <script src="./js/components.js"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>
